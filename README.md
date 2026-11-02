@@ -3,7 +3,7 @@
 <img src="assets/mercatcher.png" alt="Mercatcher Logo" width="130" style="border-radius: 26px; box-shadow: 0 8px 32px rgba(2, 132, 199, 0.45); margin-bottom: 12px;" />
 
 # ⚡ Mercatcher
-### Yeni Nesil Toplu Medya & Dosya İndirici (Bulk Media Downloader Pro)
+### Yeni Nesil Toplu Medya & Dosya İndirici
 
 [![Python Version](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
