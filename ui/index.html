@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Mercatcher - Bulk Media Downloader Pro</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #070a13;
+      color: #f8fafc;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background-image: 
+        radial-gradient(circle at 10% 15%, rgba(2, 132, 199, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 90% 85%, rgba(37, 99, 235, 0.06) 0%, transparent 45%);
+    }
+
+    /* TOP HEADER BAR */
+    .header {
+      height: 48px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #0f172a;
+      -webkit-app-region: drag;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      -webkit-app-region: no-drag;
+    }
+
+    .logo-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 14px rgba(2, 132, 199, 0.45);
+      overflow: hidden;
+    }
+
+    .logo-badge img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .app-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.2px;
+    }
+
+    .version-pill {
+      background: #0d1525;
+      border: 1px solid #1a2942;
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      -webkit-app-region: no-drag;
+    }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #22c55e;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+    }
+
+    .win-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #94a3b8;
+      font-size: 14px;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+
+    .win-btn {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.15s;
+    }
+
+    .win-btn:hover { color: #ffffff; }
+
+    /* BODY */
+    .body-container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 76px;
+      background: #060810;
+      border-right: 1px solid #0f172a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 0;
+      gap: 8px;
+    }
+
+    .nav-item {
+      width: 60px;
+      height: 64px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      color: #94a3b8;
+      border: 1px solid transparent;
+    }
+
+    .nav-item:hover {
+      background: #0a1120;
+      color: #cbd5e1;
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.22), rgba(37, 99, 235, 0.12));
+      border: 1px solid #0284c7;
+      box-shadow: 0 0 16px rgba(2, 132, 199, 0.35);
+      color: #ffffff;
+    }
+
+    .nav-item svg { width: 22px; height: 22px; stroke-width: 2; }
+    .nav-item.active svg { stroke: #38bdf8; filter: drop-shadow(0 0 6px #0284c7); }
+    .nav-item span { font-size: 10px; font-weight: 600; }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      color: #38bdf8;
+      font-size: 20px;
+      filter: drop-shadow(0 0 8px #0284c7);
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 20px 0 20px;
+      overflow: hidden;
+    }
+
+    /* TOP ACTION ROW */
+    .top-action-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .input-wrapper {
+      flex: 1;
+      height: 48px;
+      background: #090e1a;
+      border: 1px solid #16243c;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      gap: 10px;
+      transition: all 0.2s;
+    }
+
+    .input-wrapper:focus-within {
+      border-color: #0284c7;
+      box-shadow: 0 0 15px rgba(2, 132, 199, 0.25);
+    }
+
+    .input-wrapper svg { width: 18px; height: 18px; stroke: #38bdf8; flex-shrink: 0; }
+    .input-wrapper input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #f8fafc;
+      font-size: 13.5px;
+      font-family: inherit;
+    }
+    .input-wrapper input::placeholder { color: #64748b; }
+
+    .btn-main-action {
+      height: 48px;
+      padding: 0 24px;
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      border: none;
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(37, 99, 235, 0.45);
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .btn-main-action:hover { filter: brightness(1.12); transform: translateY(-1px); }
+    .btn-main-action:active { transform: translateY(0); }
+    .btn-main-action.stop {
+      background: linear-gradient(135deg, #dc2626, #ef4444);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.45);
+    }
+
+    /* CONTROLS STRIP */
+    .controls-strip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .pill-btn {
+      height: 38px;
+      background: #0a1120;
+      border: 1px solid #16243c;
+      border-radius: 10px;
+      padding: 0 14px;
+      color: #e2e8f0;
+      font-size: 12.5px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .pill-btn:hover {
+      background: #0f192e;
+      border-color: #2563eb;
+    }
+
+    .pill-btn svg { width: 15px; height: 15px; stroke: #94a3b8; }
+    .pill-btn .arrow { font-size: 10px; color: #64748b; margin-left: 2px; }
+    .pill-right { margin-left: auto; }
+
+    /* TABS */
+    .tabs-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tab-item {
+      padding: 8px 16px;
+      border-radius: 10px 10px 0 0;
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 1px solid transparent;
+      border-bottom: none;
+    }
+
+    .tab-item.active {
+      background: #0a1222;
+      border-color: #1a2d48;
+      color: #f8fafc;
+      box-shadow: 0 -2px 10px rgba(2, 132, 199, 0.1);
+    }
+
+    .tab-badge {
+      background: #0e2036;
+      color: #38bdf8;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 10px;
+    }
+
+    /* CARDS */
+    .downloads-container {
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 12px;
+    }
+
+    .downloads-container::-webkit-scrollbar { width: 6px; }
+    .downloads-container::-webkit-scrollbar-thumb { background: #16243c; border-radius: 3px; }
+
+    .download-card {
+      background: #090f1d;
+      border: 1px solid #16243c;
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .media-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #0284c7, #1d4ed8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 14px rgba(2, 132, 199, 0.35);
+      flex-shrink: 0;
+    }
+
+    .media-icon svg { width: 18px; height: 18px; fill: #ffffff; margin-left: 2px; }
+
+    .media-info { flex: 1; min-width: 0; }
+    .media-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #f8fafc;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .media-meta { font-size: 12px; color: #94a3b8; margin: 3px 0 7px 0; }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 5px;
+      background: #10192a;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0284c7, #38bdf8);
+      border-radius: 3px;
+      box-shadow: 0 0 8px #38bdf8;
+      transition: width 0.25s ease;
+    }
+
+    .media-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+
+    .media-percent {
+      font-size: 17px;
+      font-weight: 800;
+      color: #38bdf8;
+      min-width: 44px;
+      text-align: right;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #0d1626;
+      border: 1px solid #182840;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .icon-btn:hover { background: #14223a; color: #ffffff; border-color: #0284c7; }
+
+    /* EMPTY STATE */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      min-height: 220px;
+      text-align: center;
+      color: #64748b;
+    }
+
+    .empty-icon { width: 52px; height: 52px; margin-bottom: 12px; stroke: #334155; }
+    .empty-title { font-size: 14px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px; }
+    .empty-sub { font-size: 12px; color: #64748b; }
+
+    /* FOOTER */
+    .footer {
+      height: 34px;
+      background: #060912;
+      border-top: 1px solid #0f172a;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .footer-left { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+    .footer-left svg { width: 14px; height: 14px; stroke: #38bdf8; }
+    .footer-right { display: flex; align-items: center; gap: 8px; color: #64748b; }
+    .heart-icon { color: #3b82f6; filter: drop-shadow(0 0 6px #2563eb); }
+
+    /* POPOVER */
+    .popover {
+      position: absolute;
+      background: #0a1222;
+      border: 1px solid #1a2c48;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      padding: 6px;
+      z-index: 100;
+      display: none;
+    }
+
+    .popover-item {
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #e2e8f0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .popover-item:hover { background: #14223a; color: #38bdf8; }
+
+    .page-view { display: none; flex: 1; overflow-y: auto; padding: 10px 0; }
+    .page-view.active { display: flex; flex-direction: column; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-badge">
+        <img src="/mercatcher.png" alt="Logo" onerror="this.outerHTML='<span style=\'font-weight:900;color:#fff;font-size:16px;\'>M</span>'">
+      </div>
+      <div class="app-title">Mercatcher</div>
+      <div class="version-pill">v1.0.0</div>
+    </div>
+
+    <div class="header-right">
+      <div class="status-pill" id="status-pill">
+        <div class="status-dot" id="status-dot"></div>
+        <span id="status-text">Hazır</span>
+      </div>
+
+      <div class="win-controls">
+        <div class="win-btn" onclick="minimizeApp()">&#x2212;</div>
+        <div class="win-btn" onclick="maximizeApp()">&#x25A2;</div>
+        <div class="win-btn" onclick="closeApp()">&#x2715;</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body-container">
+    <div class="sidebar">
+      <div class="nav-item active" id="nav-download" onclick="switchNav('download')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        <span data-i18n="nav_download">İndir</span>
+      </div>
+
+      <div class="nav-item" id="nav-history" onclick="switchNav('history')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span data-i18n="nav_history">Geçmiş</span>
+      </div>
+
+      <div class="nav-item" id="nav-settings" onclick="switchNav('settings')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span data-i18n="nav_settings">Ayarlar</span>
+      </div>
+
+      <div class="nav-item" id="nav-about" onclick="switchNav('about')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span data-i18n="nav_about">Hakkında</span>
+      </div>
+
+      <div class="sidebar-bottom">⚡</div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <div class="page-view active" id="view-download">
+        
+        <!-- TOP INPUT ROW -->
+        <div class="top-action-row">
+          <div class="input-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <input type="text" id="link-input" data-i18n="input_placeholder" placeholder="GoFile, Bunkr, Balbums, Filester, CyberFile, Pixeldrain, MEGA..." autocomplete="off">
+          </div>
+
+          <button class="btn-main-action" id="btn-action" onclick="toggleDownload()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span id="btn-action-text" data-i18n="btn_start">İndirmeyi Başlat</span>
+          </button>
+        </div>
+
+        <!-- CONTROLS STRIP (4 PILLS) -->
+        <div class="controls-strip">
+          <div class="pill-btn" onclick="chooseFolder()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span id="folder-pill-text">Klasör: Downloads</span>
+            <span class="arrow">∨</span>
+          </div>
+
+          <div class="pill-btn" onclick="toggleThreadsPopover(event)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span id="threads-pill-text">Eşzamanlı: 3</span>
+            <span class="arrow">∨</span>
+          </div>
+
+          <div class="pill-btn" onclick="toggleDelayPopover(event)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span id="delay-pill-text">Bekleme: 5 sn</span>
+            <span class="arrow">∨</span>
+          </div>
+
+          <div class="pill-btn pill-right" onclick="toggleMorePopover(event)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+            <span id="more-pill-text" data-i18n="pill_more">Daha Fazla</span>
+            <span class="arrow">∨</span>
+          </div>
+        </div>
+
+        <!-- TABS ROW -->
+        <div class="tabs-row">
+          <div class="tab-item active" id="tab-active-btn" onclick="switchDownloadTab('active')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            <span data-i18n="tab_active">Aktif İndirmeler</span>
+            <div class="tab-badge" id="active-count-badge">0</div>
+          </div>
+
+          <div class="tab-item" id="tab-done-btn" onclick="switchDownloadTab('completed')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+            <span data-i18n="tab_completed">Tamamlananlar</span>
+          </div>
+        </div>
+
+        <!-- CARDS LIST -->
+        <div class="downloads-container" id="cards-container">
+          <div class="empty-state" id="empty-state">
+            <svg class="empty-icon" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" stroke-width="1.8"/></svg>
+            <div class="empty-title" id="empty-title" data-i18n="empty_title">Henüz indirme eklenmedi.</div>
+            <div class="empty-sub" id="empty-sub" data-i18n="empty_sub">Yukarıdaki alana bağlantılarınızı yapıştırarak indirmelere başlayabilirsiniz.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PAGE: HISTORY -->
+      <div class="page-view" id="view-history">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <h2 style="font-size: 16px; font-weight: 700;" data-i18n="history_title">🕒 İndirme Geçmişi</h2>
+          <button class="pill-btn" onclick="clearHistory()" data-i18n="btn_clear_history">🗑️ Geçmişi Temizle</button>
+        </div>
+        <div id="history-list" style="flex: 1; overflow-y: auto;"></div>
+      </div>
+
+      <!-- PAGE: SETTINGS -->
+      <div class="page-view" id="view-settings">
+        <h2 style="font-size: 16px; font-weight: 700; margin-bottom: 14px;" data-i18n="settings_title">⚙️ Ayarlar</h2>
+        
+        <!-- DİL SEÇİMİ (7 DİL & OTOMATİK SİSTEM DİLİ) -->
+        <div style="background: #090f1d; border: 1px solid #16243c; border-radius: 14px; padding: 22px; max-width: 620px; margin-bottom: 16px;">
+          <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;" data-i18n="settings_lang_label">Uygulama Dili</label>
+          <div style="font-size: 11px; color: #64748b; margin-bottom: 12px;" data-i18n="settings_lang_desc">Arayüz dilini seçin (desteklenmeyen sistem dillerinde otomatik İngilizce açılır).</div>
+          <select id="lang-select" onchange="changeLanguage(this.value)" style="width: 100%; height: 42px; background: #070a13; border: 1px solid #16243c; border-radius: 8px; color: #fff; padding: 0 12px; font-size: 13px; cursor: pointer; outline: none;">
+            <option value="auto">🌐 Otomatik (Sistem Dili / System Default)</option>
+            <option value="tr">🇹🇷 Türkçe</option>
+            <option value="en">🇬🇧 English</option>
+            <option value="zh">🇨🇳 简体中文 (Simplified Chinese)</option>
+            <option value="es">🇪🇸 Español (Spanish)</option>
+            <option value="nl">🇳🇱 Nederlands (Dutch)</option>
+            <option value="de">🇩🇪 Deutsch (German)</option>
+            <option value="pt">🇵🇹 Português (Portuguese)</option>
+          </select>
+        </div>
+
+        <!-- GOFILE TOKEN -->
+        <div style="background: #090f1d; border: 1px solid #16243c; border-radius: 14px; padding: 22px; max-width: 620px;">
+          <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;" data-i18n="settings_token_label">Gofile API Tokeni</label>
+          <div style="font-size: 11px; color: #64748b; margin-bottom: 10px;" data-i18n="settings_token_desc">gofile.io/myprofile adresinden ücretsiz token alarak rate limit sınırını kaldırabilirsiniz.</div>
+          <input type="text" id="token-setting-input" style="width: 100%; height: 38px; background: #070a13; border: 1px solid #16243c; border-radius: 8px; color: #fff; padding: 0 12px; margin-bottom: 16px; font-family: monospace;">
+          <button class="btn-main-action" style="height: 38px; padding: 0 18px;" onclick="saveTokenSetting()" data-i18n="btn_save">Kaydet</button>
+        </div>
+      </div>
+
+      <!-- PAGE: ABOUT -->
+      <div class="page-view" id="view-about">
+        <h2 style="font-size: 16px; font-weight: 700; margin-bottom: 14px;" data-i18n="about_title">ℹ️ Hakkında</h2>
+        <div style="background: #090f1d; border: 1px solid #16243c; border-radius: 14px; padding: 22px; max-width: 620px; display: flex; gap: 20px; align-items: center;">
+          <img src="/mercatcher.png" alt="Mercatcher Logo" style="width: 84px; height: 84px; border-radius: 18px; box-shadow: 0 6px 24px rgba(2, 132, 199, 0.4); object-fit: cover; flex-shrink: 0;">
+          <div>
+            <h3 style="color: #38bdf8; font-size: 16px; margin-bottom: 4px;">⚡ Mercatcher v1.0.0</h3>
+            <p style="color: #94a3b8; font-size: 12px; line-height: 1.5; margin-bottom: 10px;" data-i18n="about_desc">
+              GoFile, Bunkr, Balbums, Filester, CyberFile, Pixeldrain, KrakenFiles, MEGA, MixDrop, DoodStream ve FileMoon servislerindeki tüm video ve albümleri yüksek hızda topluca indiren yeni nesil masaüstü indirme yazılımı.
+            </p>
+            <div style="font-size: 11px; color: #64748b; line-height: 1.6;">
+              <strong data-i18n="about_supported">Desteklenen Servisler:</strong><br>
+              • GoFile &bull; Bunkr &bull; Balbums &bull; Filester &bull; CyberFile &bull; Pixeldrain<br>
+              • KrakenFiles &bull; MEGA &bull; MixDrop &bull; DoodStream &bull; FileMoon
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      <span id="footer-speed">0.0 MB/s</span>
+    </div>
+
+    <div class="footer-right">
+      <span>💽</span>
+      <span id="footer-disk">-- GB Boşta</span>
+      <span class="heart-icon">💙</span>
+    </div>
+  </div>
+
+  <!-- POPOVERS -->
+  <div class="popover" id="popover-threads">
+    <div class="popover-item" onclick="selectThread(1)" id="pop-th-1">⚡ 1 Eşzamanlı</div>
+    <div class="popover-item" onclick="selectThread(2)" id="pop-th-2">⚡ 2 Eşzamanlı</div>
+    <div class="popover-item" onclick="selectThread(3)" id="pop-th-3">⚡ 3 Eşzamanlı (Varsayılan)</div>
+    <div class="popover-item" onclick="selectThread(4)" id="pop-th-4">⚡ 4 Eşzamanlı</div>
+    <div class="popover-item" onclick="selectThread(6)" id="pop-th-6">⚡ 6 Eşzamanlı</div>
+  </div>
+
+  <div class="popover" id="popover-delay">
+    <div class="popover-item" onclick="selectDelay(0)" id="pop-del-0">⏱️ 0 sn (Beklemesiz)</div>
+    <div class="popover-item" onclick="selectDelay(3)" id="pop-del-3">⏱️ 3 sn</div>
+    <div class="popover-item" onclick="selectDelay(5)" id="pop-del-5">⏱️ 5 sn (Tavsiye Edilen)</div>
+    <div class="popover-item" onclick="selectDelay(10)" id="pop-del-10">⏱️ 10 sn</div>
+  </div>
+
+  <div class="popover" id="popover-more" style="width: 240px; padding: 10px;">
+    <div class="popover-item" onclick="pasteClipboard()" data-i18n="more_paste">📋 Panodan Yapıştır</div>
+    <div class="popover-item" onclick="clearInput()" data-i18n="more_clear">✕ Linki Temizle</div>
+    <div class="popover-item" onclick="openFolderNative()" data-i18n="more_open_folder">↗ Klasörü Aç</div>
+  </div>
+
+  <script>
+    let activeDownloads = [];
+    let completedDownloads = [];
+    let currentTab = 'active';
+    let isDownloading = false;
+    let currentFolder = 'Downloads';
+    let currentThreads = 3;
+    let currentDelay = 5;
+    let currentDiskFree = '-- GB';
+
+    // 7 DİL SÖZLÜĞÜ (i18n)
+    const I18N = {
+      tr: {
+        app_title: "Mercatcher - Bulk Media Downloader Pro",
+        status_ready: "Hazır",
+        status_scanning: "Taranıyor...",
+        status_downloading: "İndiriliyor...",
+        status_stopped: "Durduruldu",
+        status_no_files: "Dosya Bulunamadı",
+        nav_download: "İndir",
+        nav_history: "Geçmiş",
+        nav_settings: "Ayarlar",
+        nav_about: "Hakkında",
+        input_placeholder: "GoFile, Bunkr, Balbums, Filester, CyberFile, Pixeldrain, MEGA...",
+        btn_start: "İndirmeyi Başlat",
+        btn_stop: "Durdur",
+        pill_folder: "Klasör: ",
+        pill_threads: "Eşzamanlı: ",
+        pill_delay: "Bekleme: ",
+        sec_short: "sn",
+        pill_more: "Daha Fazla",
+        tab_active: "Aktif İndirmeler",
+        tab_completed: "Tamamlananlar",
+        empty_title: "Henüz indirme eklenmedi.",
+        empty_sub: "Yukarıdaki alana bağlantılarınızı yapıştırarak indirmelere başlayabilirsiniz.",
+        empty_completed_title: "Tamamlanan indirme bulunmuyor.",
+        empty_completed_sub: "İndirilen dosyalarınız burada listelenir.",
+        history_title: "🕒 İndirme Geçmişi",
+        btn_clear_history: "🗑️ Geçmişi Temizle",
+        history_empty: "Henüz indirme geçmişi yok.",
+        settings_title: "⚙️ Ayarlar",
+        settings_lang_label: "Uygulama Dili",
+        settings_lang_desc: "Arayüz dilini seçin (desteklenmeyen sistem dillerinde otomatik İngilizce açılır).",
+        settings_token_label: "Gofile API Tokeni",
+        settings_token_desc: "gofile.io/myprofile adresinden ücretsiz token alarak rate limit sınırını kaldırabilirsiniz.",
+        btn_save: "Kaydet",
+        saved_toast: "Ayarlar başarıyla kaydedildi!",
+        about_title: "ℹ️ Hakkında",
+        about_desc: "GoFile, Bunkr, Balbums, Filester, CyberFile, Pixeldrain, KrakenFiles, MEGA, MixDrop, DoodStream ve FileMoon servislerindeki tüm video ve albümleri yüksek hızda topluca indiren yeni nesil masaüstü indirme yazılımı.",
+        about_supported: "Desteklenen Servisler:",
+        more_paste: "📋 Panodan Yapıştır",
+        more_clear: "✕ Linki Temizle",
+        more_open_folder: "↗ Klasörü Aç",
+        threads_suffix: "Eşzamanlı",
+        threads_default: "(Varsayılan)",
+        delay_none: "Beklemesiz",
+        delay_recommended: "Tavsiye Edilen",
+        footer_free: "Boşta"
+      },
+      en: {
+        app_title: "Mercatcher - Bulk Media Downloader Pro",
+        status_ready: "Ready",
+        status_scanning: "Scanning...",
+        status_downloading: "Downloading...",
+        status_stopped: "Stopped",
+        status_no_files: "No Files Found",
+        nav_download: "Download",
+        nav_history: "History",
+        nav_settings: "Settings",
+        nav_about: "About",
+        input_placeholder: "GoFile, Bunkr, Balbums, Filester, CyberFile, Pixeldrain, MEGA...",
+        btn_start: "Start Download",
+        btn_stop: "Stop Download",
+        pill_folder: "Folder: ",
+        pill_threads: "Threads: ",
+        pill_delay: "Delay: ",
+        sec_short: "s",
+        pill_more: "More",
+        tab_active: "Active Downloads",
+        tab_completed: "Completed",
+        empty_title: "No downloads added yet.",
+        empty_sub: "Paste your links into the field above to start downloading.",
+        empty_completed_title: "No completed downloads yet.",
+        empty_completed_sub: "Finished downloads will be listed here.",
+        history_title: "🕒 Download History",
+        btn_clear_history: "🗑️ Clear History",
+        history_empty: "No download history yet.",
+        settings_title: "⚙️ Settings",
+        settings_lang_label: "Application Language",
+        settings_lang_desc: "Select interface language (unsupported system languages default to English).",
+        settings_token_label: "Gofile API Token",
+        settings_token_desc: "Get a free token from gofile.io/myprofile to eliminate guest rate limits.",
+        btn_save: "Save",
+        saved_toast: "Settings saved successfully!",
+        about_title: "ℹ️ About",
+        about_desc: "Next-generation desktop downloader for high-speed bulk downloads of videos and albums from GoFile, Bunkr, Balbums, Filester, CyberFile, Pixeldrain, KrakenFiles, MEGA, MixDrop, DoodStream, and FileMoon.",
+        about_supported: "Supported Services:",
+        more_paste: "📋 Paste from Clipboard",
+        more_clear: "✕ Clear Input",
+        more_open_folder: "↗ Open Folder",
+        threads_suffix: "Concurrent",
+        threads_default: "(Default)",
+        delay_none: "No Delay",
+        delay_recommended: "Recommended",
+        footer_free: "Free"
+      },
+      zh: {
+        app_title: "Mercatcher - 批量媒体下载器 Pro",
+        status_ready: "就绪",
+        status_scanning: "扫描中...",
+        status_downloading: "下载中...",
+        status_stopped: "已停止",
+        status_no_files: "未找到文件",
+        nav_download: "下载",
+        nav_history: "历史",
+        nav_settings: "设置",
+        nav_about: "关于",
+        input_placeholder: "支持 GoFile、Bunkr、Balbums、Filester、CyberFile、Pixeldrain、MEGA 等...",
+        btn_start: "开始下载",
+        btn_stop: "停止下载",
+        pill_folder: "目录: ",
+        pill_threads: "并发数: ",
+        pill_delay: "延迟: ",
+        sec_short: "秒",
+        pill_more: "更多",
+        tab_active: "正在下载",
+        tab_completed: "已完成",
+        empty_title: "暂无下载任务",
+        empty_sub: "请在上方输入框粘贴链接以开始批量下载。",
+        empty_completed_title: "暂无已完成的下载。",
+        empty_completed_sub: "已下载完成的文件将在此处列出。",
+        history_title: "🕒 下载历史",
+        btn_clear_history: "🗑️ 清空历史",
+        history_empty: "暂无下载历史记录。",
+        settings_title: "⚙️ 设置",
+        settings_lang_label: "界面语言",
+        settings_lang_desc: "选择应用程序显示的语言（系统不支持的语言将默认显示英语）。",
+        settings_token_label: "Gofile API 令牌",
+        settings_token_desc: "可从 gofile.io/myprofile 免费获取 Token，以解除访客速率限制。",
+        btn_save: "保存",
+        saved_toast: "设置已成功保存！",
+        about_title: "ℹ️ 关于",
+        about_desc: "新一代桌面批量媒体下载器，高速下载 GoFile、Bunkr、Balbums、Filester、CyberFile、Pixeldrain、KrakenFiles、MEGA、MixDrop、DoodStream 和 FileMoon 等平台的所有视频与相册。",
+        about_supported: "支持的平台:",
+        more_paste: "📋 剪贴板粘贴",
+        more_clear: "✕ 清空输入",
+        more_open_folder: "↗ 打开下载目录",
+        threads_suffix: "并发",
+        threads_default: "(默认)",
+        delay_none: "无延迟",
+        delay_recommended: "推荐设置",
+        footer_free: "可用"
+      },
+      es: {
+        app_title: "Mercatcher - Bulk Media Downloader Pro",
+        status_ready: "Listo",
+        status_scanning: "Escaneando...",
+        status_downloading: "Descargando...",
+        status_stopped: "Detenido",
+        status_no_files: "Archivos no encontrados",
+        nav_download: "Descargar",
+        nav_history: "Historial",
+        nav_settings: "Ajustes",
+        nav_about: "Acerca de",
+        input_placeholder: "GoFile, Bunkr, Balbums, Filester, CyberFile, Pixeldrain, MEGA...",
+        btn_start: "Iniciar descarga",
+        btn_stop: "Detener",
+        pill_folder: "Carpeta: ",
+        pill_threads: "Hilos: ",
+        pill_delay: "Espera: ",
+        sec_short: "s",
+        pill_more: "Más",
+        tab_active: "Descargas activas",
+        tab_completed: "Completadas",
+        empty_title: "Aún no hay descargas.",
+        empty_sub: "Pega tus enlaces en el campo superior para comenzar.",
+        empty_completed_title: "No hay descargas completadas.",
+        empty_completed_sub: "Los archivos descargados se mostrarán aquí.",
+        history_title: "🕒 Historial de descargas",
+        btn_clear_history: "🗑️ Borrar historial",
+        history_empty: "No hay historial de descargas.",
+        settings_title: "⚙️ Ajustes",
+        settings_lang_label: "Idioma de la aplicación",
+        settings_lang_desc: "Selecciona el idioma (los idiomas no admitidos se abrirán en inglés).",
+        settings_token_label: "Token API de Gofile",
+        settings_token_desc: "Obtén un token gratuito en gofile.io/myprofile para eliminar los límites de velocidad.",
+        btn_save: "Guardar",
+        saved_toast: "¡Ajustes guardados correctamente!",
+        about_title: "ℹ️ Acerca de",
+        about_desc: "Descargador de escritorio de nueva generación para descargar masivamente videos y álbumes de GoFile, Bunkr, Balbums, Filester, CyberFile, Pixeldrain, KrakenFiles, MEGA, MixDrop, DoodStream y FileMoon a alta velocidad.",
+        about_supported: "Servicios compatibles:",
+        more_paste: "📋 Pegar del portapapeles",
+        more_clear: "✕ Limpiar enlace",
+        more_open_folder: "↗ Abrir carpeta",
+        threads_suffix: "Simultáneos",
+        threads_default: "(Predeterminado)",
+        delay_none: "Sin espera",
+        delay_recommended: "Recomendado",
+        footer_free: "Libre"
+      },
+      nl: {
+        app_title: "Mercatcher - Bulk Media Downloader Pro",
+        status_ready: "Klaar",
+        status_scanning: "Scannen...",
+        status_downloading: "Downloaden...",
+        status_stopped: "Gestopt",
+        status_no_files: "Geen bestanden gevonden",
+        nav_download: "Downloaden",
+        nav_history: "Geschiedenis",
+        nav_settings: "Instellingen",
+        nav_about: "Over",
+        input_placeholder: "GoFile, Bunkr, Balbums, Filester, CyberFile, Pixeldrain, MEGA...",
+        btn_start: "Start download",
+        btn_stop: "Stoppen",
+        pill_folder: "Map: ",
+        pill_threads: "Threads: ",
+        pill_delay: "Wachttijd: ",
+        sec_short: "s",
+        pill_more: "Meer",
+        tab_active: "Actieve downloads",
+        tab_completed: "Voltooid",
+        empty_title: "Nog geen downloads toegevoegd.",
+        empty_sub: "Plak je links in het bovenstaande veld om te beginnen.",
+        empty_completed_title: "Geen voltooide downloads.",
+        empty_completed_sub: "Voltooide bestanden verschijnen hier.",
+        history_title: "🕒 Downloadgeschiedenis",
+        btn_clear_history: "🗑️ Geschiedenis wissen",
+        history_empty: "Nog geen downloadgeschiedenis.",
+        settings_title: "⚙️ Instellingen",
+        settings_lang_label: "Applicatietaal",
+        settings_lang_desc: "Kies de taal (niet-ondersteunde systeemtalen openen in het Engels).",
+        settings_token_label: "Gofile API Token",
+        settings_token_desc: "Verkrijg een gratis token via gofile.io/myprofile om gastlimieten op te heffen.",
+        btn_save: "Opslaan",
+        saved_toast: "Instellingen succesvol opgeslagen!",
+        about_title: "ℹ️ Over Mercatcher",
+        about_desc: "Moderne desktop-downloader voor het op hoge snelheid bulksgewijs downloaden van video's en albums van GoFile, Bunkr, Balbums, Filester, CyberFile, Pixeldrain, KrakenFiles, MEGA, MixDrop, DoodStream en FileMoon.",
+        about_supported: "Ondersteunde platforms:",
+        more_paste: "📋 Plakken van klembord",
+        more_clear: "✕ Invoer wissen",
+        more_open_folder: "↗ Map openen",
+        threads_suffix: "Gelijktijdig",
+        threads_default: "(Standaard)",
+        delay_none: "Geen wachttijd",
+        delay_recommended: "Aanbevolen",
+        footer_free: "Vrij"
+      },
+      de: {
+        app_title: "Mercatcher - Bulk Media Downloader Pro",
+        status_ready: "Bereit",
+        status_scanning: "Wird gescannt...",
+        status_downloading: "Wird heruntergeladen...",
+        status_stopped: "Angehalten",
+        status_no_files: "Keine Dateien gefunden",
+        nav_download: "Herunterladen",
+        nav_history: "Verlauf",
+        nav_settings: "Einstellungen",
+        nav_about: "Über",
+        input_placeholder: "GoFile, Bunkr, Balbums, Filester, CyberFile, Pixeldrain, MEGA...",
+        btn_start: "Download starten",
+        btn_stop: "Anhalten",
+        pill_folder: "Ordner: ",
+        pill_threads: "Threads: ",
+        pill_delay: "Verzögerung: ",
+        sec_short: "s",
+        pill_more: "Mehr",
+        tab_active: "Aktive Downloads",
+        tab_completed: "Abgeschlossen",
+        empty_title: "Noch keine Downloads hinzugefügt.",
+        empty_sub: "Fügen Sie oben Links ein, um den Download zu starten.",
+        empty_completed_title: "Keine abgeschlossenen Downloads.",
+        empty_completed_sub: "Abgeschlossene Dateien werden hier angezeigt.",
+        history_title: "🕒 Download-Verlauf",
+        btn_clear_history: "🗑️ Verlauf leeren",
+        history_empty: "Noch kein Download-Verlauf vorhanden.",
+        settings_title: "⚙️ Einstellungen",
+        settings_lang_label: "Programmsprache",
+        settings_lang_desc: "Wählen Sie die Sprache (nicht unterstützte Systemsprachen öffnen auf Englisch).",
+        settings_token_label: "Gofile API-Token",
+        settings_token_desc: "Kostenloses Token unter gofile.io/myprofile abrufen, um Ratenbegrenzungen aufzuheben.",
+        btn_save: "Speichern",
+        saved_toast: "Einstellungen erfolgreich gespeichert!",
+        about_title: "ℹ️ Über Mercatcher",
+        about_desc: "Desktop-Downloader der nächsten Generation zum blitzschnellen Massen-Download von Videos und Alben von GoFile, Bunkr, Balbums, Filester, CyberFile, Pixeldrain, KrakenFiles, MEGA, MixDrop, DoodStream und FileMoon.",
+        about_supported: "Unterstützte Dienste:",
+        more_paste: "📋 Aus Zwischenablage einfügen",
+        more_clear: "✕ Link leeren",
+        more_open_folder: "↗ Ordner öffnen",
+        threads_suffix: "Gleichzeitig",
+        threads_default: "(Standard)",
+        delay_none: "Keine Verzögerung",
+        delay_recommended: "Empfohlen",
+        footer_free: "Frei"
+      },
+      pt: {
+        app_title: "Mercatcher - Bulk Media Downloader Pro",
+        status_ready: "Pronto",
+        status_scanning: "Verificando...",
+        status_downloading: "Baixando...",
+        status_stopped: "Parado",
+        status_no_files: "Nenhum arquivo encontrado",
+        nav_download: "Baixar",
+        nav_history: "Histórico",
+        nav_settings: "Configurações",
+        nav_about: "Sobre",
+        input_placeholder: "GoFile, Bunkr, Balbums, Filester, CyberFile, Pixeldrain, MEGA...",
+        btn_start: "Iniciar Download",
+        btn_stop: "Parar",
+        pill_folder: "Pasta: ",
+        pill_threads: "Threads: ",
+        pill_delay: "Espera: ",
+        sec_short: "s",
+        pill_more: "Mais",
+        tab_active: "Downloads Ativos",
+        tab_completed: "Concluídos",
+        empty_title: "Nenhum download adicionado ainda.",
+        empty_sub: "Cole seus links no campo acima para começar a baixar.",
+        empty_completed_title: "Nenhum download concluído ainda.",
+        empty_completed_sub: "Os arquivos baixados serão listados aqui.",
+        history_title: "🕒 Histórico de Downloads",
+        btn_clear_history: "🗑️ Limpar Histórico",
+        history_empty: "Ainda não há histórico de downloads.",
+        settings_title: "⚙️ Configurações",
+        settings_lang_label: "Idioma do Aplicativo",
+        settings_lang_desc: "Selecione o idioma (idiomas de sistema não suportados abrirão em inglês).",
+        settings_token_label: "Token da API Gofile",
+        settings_token_desc: "Obtenha um token gratuito em gofile.io/myprofile para remover limites de taxa de convidados.",
+        btn_save: "Salvar",
+        saved_toast: "Configurações salvas com sucesso!",
+        about_title: "ℹ️ Sobre o Mercatcher",
+        about_desc: "Baixador de desktop de última geração para download em massa em alta velocidade de vídeos e álbuns do GoFile, Bunkr, Balbums, Filester, CyberFile, Pixeldrain, KrakenFiles, MEGA, MixDrop, DoodStream e FileMoon.",
+        about_supported: "Serviços Suportados:",
+        more_paste: "📋 Colar da área de transferência",
+        more_clear: "✕ Limpar link",
+        more_open_folder: "↗ Abrir pasta",
+        threads_suffix: "Simultâneos",
+        threads_default: "(Padrão)",
+        delay_none: "Sem espera",
+        delay_recommended: "Recomendado",
+        footer_free: "Livre"
+      }
+    };
+
+    let selectedLangPref = 'auto'; // 'auto' veya 'tr', 'en', 'zh', 'es', 'nl', 'de', 'pt'
+    let effectiveLang = 'en';
+
+    // Sistem dilini tespit et (desteklenmiyorsa 'en' aç)
+    function detectSystemLanguage() {
+      const navLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+      if (navLang.startsWith('tr')) return 'tr';
+      if (navLang.startsWith('zh')) return 'zh';
+      if (navLang.startsWith('es')) return 'es';
+      if (navLang.startsWith('nl')) return 'nl';
+      if (navLang.startsWith('de')) return 'de';
+      if (navLang.startsWith('pt')) return 'pt';
+      if (navLang.startsWith('en')) return 'en';
+      return 'en'; // Desteklenmeyen tüm sistem dilleri İngilizce açılır
+    }
+
+    function t(key) {
+      const dict = I18N[effectiveLang] || I18N['en'];
+      return dict[key] || I18N['en'][key] || key;
+    }
+
+    function applyTranslations() {
+      document.title = t('app_title');
+
+      // data-i18n etiketlerini güncelle
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const k = el.getAttribute('data-i18n');
+        if (el.tagName === 'INPUT') {
+          el.placeholder = t(k);
+        } else {
+          el.innerText = t(k);
+        }
+      });
+
+      // Butonlar ve hap kontrollerini güncelle
+      if (isDownloading) {
+        setStopButton();
+      } else {
+        setStartButton();
+      }
+
+      updatePillTexts();
+      updatePopoverTexts();
+      renderCards();
+    }
+
+    function updatePillTexts() {
+      document.getElementById('folder-pill-text').innerText = `${t('pill_folder')}${currentFolder}`;
+      document.getElementById('threads-pill-text').innerText = `${t('pill_threads')}${currentThreads}`;
+      document.getElementById('delay-pill-text').innerText = `${t('pill_delay')}${currentDelay} ${t('sec_short')}`;
+      const moreEl = document.getElementById('more-pill-text');
+      if (moreEl) moreEl.innerText = t('pill_more');
+    }
+
+    function updatePopoverTexts() {
+      const thSuffix = t('threads_suffix');
+      const thDef = t('threads_default');
+      const p1 = document.getElementById('pop-th-1'); if (p1) p1.innerText = `⚡ 1 ${thSuffix}`;
+      const p2 = document.getElementById('pop-th-2'); if (p2) p2.innerText = `⚡ 2 ${thSuffix}`;
+      const p3 = document.getElementById('pop-th-3'); if (p3) p3.innerText = `⚡ 3 ${thSuffix} ${thDef}`;
+      const p4 = document.getElementById('pop-th-4'); if (p4) p4.innerText = `⚡ 4 ${thSuffix}`;
+      const p6 = document.getElementById('pop-th-6'); if (p6) p6.innerText = `⚡ 6 ${thSuffix}`;
+
+      const sec = t('sec_short');
+      const delNone = t('delay_none');
+      const delRec = t('delay_recommended');
+      const d0 = document.getElementById('pop-del-0'); if (d0) d0.innerText = `⏱️ 0 ${sec} (${delNone})`;
+      const d3 = document.getElementById('pop-del-3'); if (d3) d3.innerText = `⏱️ 3 ${sec}`;
+      const d5 = document.getElementById('pop-del-5'); if (d5) d5.innerText = `⏱️ 5 ${sec} (${delRec})`;
+      const d10 = document.getElementById('pop-del-10'); if (d10) d10.innerText = `⏱️ 10 ${sec}`;
+    }
+
+    function changeLanguage(langCode, saveToServer = true) {
+      selectedLangPref = langCode;
+      if (langCode === 'auto') {
+        effectiveLang = detectSystemLanguage();
+      } else if (I18N[langCode]) {
+        effectiveLang = langCode;
+      } else {
+        effectiveLang = 'en';
+      }
+
+      document.getElementById('lang-select').value = langCode;
+      localStorage.setItem('mercatcher_lang', langCode);
+
+      if (saveToServer) {
+        fetch('/api/set-lang', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lang: langCode })
+        }).catch(() => {});
+      }
+
+      applyTranslations();
+    }
+
+    // İlk dil yapılandırması
+    const savedLocalLang = localStorage.getItem('mercatcher_lang');
+    if (savedLocalLang) {
+      changeLanguage(savedLocalLang, false);
+    } else {
+      changeLanguage('auto', false);
+    }
+
+    // Load initial settings from server
+    fetch('/api/init')
+      .then(r => r.json())
+      .then(d => {
+        currentFolder = d.folder_name || 'Downloads';
+        currentThreads = d.threads || 3;
+        currentDelay = d.delay || 5;
+        currentDiskFree = d.disk_free || '-- GB';
+
+        if (d.lang && !savedLocalLang) {
+          changeLanguage(d.lang, false);
+        }
+
+        document.getElementById('footer-disk').innerText = currentDiskFree;
+        document.getElementById('token-setting-input').value = d.token || '';
+        updatePillTexts();
+      })
+      .catch(() => {});
+
+    // Polling loop (400ms)
+    setInterval(() => {
+      fetch('/api/poll')
+        .then(r => r.json())
+        .then(d => {
+          isDownloading = d.is_downloading;
+
+          // Status metnini çevir
+          let rawStatus = d.status_text || '';
+          let translatedStatus = rawStatus;
+          if (rawStatus === 'Hazır') translatedStatus = t('status_ready');
+          else if (rawStatus === 'Taranıyor...') translatedStatus = t('status_scanning');
+          else if (rawStatus === 'İndiriliyor...') translatedStatus = t('status_downloading');
+          else if (rawStatus === 'Durduruldu') translatedStatus = t('status_stopped');
+          else if (rawStatus === 'Dosya Bulunamadı') translatedStatus = t('status_no_files');
+
+          document.getElementById('status-text').innerText = translatedStatus;
+          document.getElementById('status-pill').style.color = d.status_color;
+          document.getElementById('status-dot').style.backgroundColor = d.status_color;
+          document.getElementById('status-dot').style.boxShadow = `0 0 8px ${d.status_color}`;
+          document.getElementById('footer-speed').innerText = d.total_speed || '0.0 MB/s';
+          if (d.disk_free) document.getElementById('footer-disk').innerText = d.disk_free;
+
+          if (isDownloading) {
+            setStopButton();
+          } else {
+            setStartButton();
+          }
+
+          activeDownloads = d.active_items || [];
+          completedDownloads = d.completed_items || [];
+          renderCards();
+        })
+        .catch(() => {});
+    }, 400);
+
+    function renderCards() {
+      const container = document.getElementById('cards-container');
+      const items = currentTab === 'active' ? activeDownloads : completedDownloads;
+      document.getElementById('active-count-badge').innerText = activeDownloads.length;
+
+      if (items.length === 0) {
+        const emptyTitle = currentTab === 'active' ? t('empty_title') : t('empty_completed_title');
+        const emptySub = currentTab === 'active' ? t('empty_sub') : t('empty_completed_sub');
+
+        container.innerHTML = `
+          <div class="empty-state">
+            <svg class="empty-icon" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" stroke-width="1.8"/></svg>
+            <div class="empty-title">${emptyTitle}</div>
+            <div class="empty-sub">${emptySub}</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = items.map(it => `
+        <div class="download-card">
+          <div class="media-icon">
+            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <div class="media-info">
+            <div class="media-title">${it.name}</div>
+            <div class="media-meta">${formatBytes(it.current)} / ${formatBytes(it.total)} &bull; ${it.speed || '0.0 MB/s'}</div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: ${it.percent}%;"></div>
+            </div>
+          </div>
+          <div class="media-actions">
+            <div class="media-percent">${it.percent}%</div>
+            <div class="icon-btn">⏸</div>
+            <div class="icon-btn">✕</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleDownload() {
+      if (isDownloading) {
+        fetch('/api/stop', { method: 'POST' });
+        return;
+      }
+
+      const input = document.getElementById('link-input');
+      const val = input.value.trim();
+      if (!val) {
+        input.focus();
+        return;
+      }
+
+      setStopButton();
+
+      fetch('/api/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ links: val })
+      });
+    }
+
+    function setStopButton() {
+      const btn = document.getElementById('btn-action');
+      btn.classList.add('stop');
+      btn.innerHTML = `<span>⏹ ${t('btn_stop')}</span>`;
+    }
+
+    function setStartButton() {
+      const btn = document.getElementById('btn-action');
+      btn.classList.remove('stop');
+      btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>${t('btn_start')}</span>`;
+    }
+
+    function switchDownloadTab(tab) {
+      currentTab = tab;
+      document.getElementById('tab-active-btn').classList.toggle('active', tab === 'active');
+      document.getElementById('tab-done-btn').classList.toggle('active', tab === 'completed');
+      renderCards();
+    }
+
+    function switchNav(nav) {
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
+
+      document.getElementById(`nav-${nav}`).classList.add('active');
+      document.getElementById(`view-${nav}`).classList.add('active');
+
+      if (nav === 'history') loadHistoryData();
+    }
+
+    function chooseFolder() {
+      fetch('/api/choose-folder', { method: 'POST' })
+        .then(r => r.json())
+        .then(d => {
+          if (d.folder_name) {
+            currentFolder = d.folder_name;
+            updatePillTexts();
+            document.getElementById('footer-disk').innerText = d.disk_free;
+          }
+        });
+    }
+
+    function pasteClipboard() {
+      navigator.clipboard.readText().then(text => {
+        if (text) document.getElementById('link-input').value = text;
+      }).catch(() => {});
+      closePopovers();
+    }
+
+    function clearInput() {
+      document.getElementById('link-input').value = '';
+      closePopovers();
+    }
+
+    function openFolderNative() {
+      fetch('/api/open-folder', { method: 'POST' });
+      closePopovers();
+    }
+
+    function selectThread(tNum) {
+      currentThreads = tNum;
+      updatePillTexts();
+      fetch('/api/set-threads', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ threads: tNum }) });
+      closePopovers();
+    }
+
+    function selectDelay(dSec) {
+      currentDelay = dSec;
+      updatePillTexts();
+      fetch('/api/set-delay', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ delay: dSec }) });
+      closePopovers();
+    }
+
+    function saveTokenSetting() {
+      const tok = document.getElementById('token-setting-input').value.trim();
+      fetch('/api/set-token', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: tok }) })
+        .then(() => alert(t('saved_toast')));
+    }
+
+    function loadHistoryData() {
+      fetch('/api/history').then(r => r.json()).then(data => {
+        const box = document.getElementById('history-list');
+        if (!data || data.length === 0) {
+          box.innerHTML = `<div style="color:#64748b; font-size:13px;">${t('history_empty')}</div>`;
+          return;
+        }
+        box.innerHTML = data.map(h => `
+          <div style="background:#090f1d; border:1px solid #16243c; border-radius:10px; padding:12px 16px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-weight:700; font-size:13px; color:#fff;">${h.album}</div>
+              <div style="font-size:11px; color:#64748b; margin-top:2px;">${h.date} &bull; ${h.count} &bull; ${h.size}</div>
+            </div>
+            <div style="color:#22c55e; font-size:12px; font-weight:600;">${h.status}</div>
+          </div>
+        `).join('');
+      });
+    }
+
+    function clearHistory() {
+      fetch('/api/clear-history', { method: 'POST' }).then(() => loadHistoryData());
+    }
+
+    function toggleThreadsPopover(e) {
+      e.stopPropagation();
+      openPopover('popover-threads', e.currentTarget);
+    }
+    function toggleDelayPopover(e) {
+      e.stopPropagation();
+      openPopover('popover-delay', e.currentTarget);
+    }
+    function toggleMorePopover(e) {
+      e.stopPropagation();
+      openPopover('popover-more', e.currentTarget);
+    }
+
+    function openPopover(id, target) {
+      closePopovers();
+      const p = document.getElementById(id);
+      const rect = target.getBoundingClientRect();
+      p.style.top = `${rect.bottom + 6}px`;
+      p.style.left = `${rect.left}px`;
+      p.style.display = 'block';
+    }
+
+    function closePopovers() {
+      document.querySelectorAll('.popover').forEach(p => p.style.display = 'none');
+    }
+    window.addEventListener('click', closePopovers);
+
+    function formatBytes(bytes) {
+      if (!bytes || bytes === 0) return '0.0 MB';
+      return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    }
+
+    function minimizeApp() {
+      if (window.pywebview && window.pywebview.api && window.pywebview.api.minimize) {
+        window.pywebview.api.minimize();
+      } else {
+        fetch('/api/window/minimize', { method: 'POST' });
+      }
+    }
+    function maximizeApp() {
+      if (window.pywebview && window.pywebview.api && window.pywebview.api.toggle_maximize) {
+        window.pywebview.api.toggle_maximize();
+      } else {
+        fetch('/api/window/maximize', { method: 'POST' });
+      }
+    }
+    function closeApp() {
+      if (window.pywebview && window.pywebview.api && window.pywebview.api.close) {
+        window.pywebview.api.close();
+      } else {
+        fetch('/api/window/close', { method: 'POST' }).finally(() => window.close());
+      }
+    }
+  </script>
+        fetch('/api/window/close', { method: 'POST' }).finally(() => window.close());
+      }
+    }
+  </script>
+</body>
+</html>

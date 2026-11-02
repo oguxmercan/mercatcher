@@ -1,0 +1,27 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyInstaller build files
+build/
+dist/
+*.spec
+
+# User settings and download targets
+downloads/
+*.part
+gofile_token.json
+settings.json
+history.json
+scratch/
+
+# Environments
+.env
+.venv
+env/
+venv/
+
+# Temporary files
+*.tmp
+*.log
