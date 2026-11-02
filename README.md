@@ -60,7 +60,7 @@ Python kurulu sisteminizde herhangi bir komut girmeden:
 
 1. **Depoyu klonlayın:**
    ```bash
-   git clone https://github.com/KULLANICI_ADINIZ/Mercatcher.git
+   git clone https://github.com/oguxmercan/mercatcher.git
    cd Mercatcher
    ```
 
