@@ -10,7 +10,7 @@ python -m pip install -r requirements.txt
 
 echo.
 echo [*] Mercatcher.exe olusturuluyor (PyInstaller)...
-python -m PyInstaller --noconsole --onefile --clean --icon="mercatcher310x310.ico" --add-data "ui;ui" --add-data "mercatcher.png;." --add-data "mercatcher44x44.ico;." --add-data "mercatcher150x150.ico;." --add-data "mercatcher310x310.ico;." --collect-all cryptography --hidden-import=cryptography --hidden-import=cryptography.hazmat.bindings._rust --name "Mercatcher" mercatcher_gui.py
+python -m PyInstaller --noconsole --onefile --clean --icon="mercatcher.ico" --add-data "ui;ui" --add-data "mercatcher.png;." --add-data "mercatcher.ico;." --add-data "mercatcher44x44.ico;." --add-data "mercatcher150x150.ico;." --add-data "mercatcher310x310.ico;." --collect-all cryptography --hidden-import=cryptography --hidden-import=cryptography.hazmat.bindings._rust --name "Mercatcher" mercatcher_gui.py
 
 echo.
 if exist "dist\Mercatcher.exe" (

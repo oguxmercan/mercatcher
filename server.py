@@ -141,10 +141,30 @@ class MercatcherHTTPHandler(BaseHTTPRequestHandler):
             else:
                 self.send_error(404)
 
-        elif path in ["/favicon.ico", "/mercatcher44x44.ico", "/mercatcher150x150.ico", "/mercatcher310x310.ico"]:
+        elif path == "/manifest.json":
+            manifest = {
+                "name": "Mercatcher",
+                "short_name": "Mercatcher",
+                "start_url": "/",
+                "display": "standalone",
+                "background_color": "#070a13",
+                "theme_color": "#070a13",
+                "icons": [
+                    {"src": "/mercatcher.png", "sizes": "1024x1024", "type": "image/png"},
+                    {"src": "/mercatcher.ico", "sizes": "16x16 24x24 32x32 48x48 64x64 128x128 256x256", "type": "image/x-icon"}
+                ]
+            }
+            content = json.dumps(manifest).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/manifest+json")
+            self.send_header("Content-Length", str(len(content)))
+            self.end_headers()
+            self.wfile.write(content)
+
+        elif path in ["/favicon.ico", "/mercatcher.ico", "/mercatcher44x44.ico", "/mercatcher150x150.ico", "/mercatcher310x310.ico"]:
             fname = path.lstrip("/")
             if fname == "favicon.ico":
-                fname = "mercatcher44x44.ico"
+                fname = "mercatcher.ico" if os.path.exists(os.path.join(BASE_DIR, "mercatcher.ico")) else "mercatcher44x44.ico"
             ico_file = os.path.join(UI_DIR, fname)
             if not os.path.exists(ico_file):
                 ico_file = os.path.join(BASE_DIR, fname)
