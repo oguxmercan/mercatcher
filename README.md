@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="mercatcher.png" alt="Mercatcher Logo" width="130" style="border-radius: 26px; box-shadow: 0 8px 32px rgba(2, 132, 199, 0.45); margin-bottom: 12px;" />
+<img src="assets/mercatcher.png" alt="Mercatcher Logo" width="130" style="border-radius: 26px; box-shadow: 0 8px 32px rgba(2, 132, 199, 0.45); margin-bottom: 12px;" />
 
 # ⚡ Mercatcher
 ### Yeni Nesil Toplu Medya & Dosya İndirici (Bulk Media Downloader Pro)

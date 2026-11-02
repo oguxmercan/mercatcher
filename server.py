@@ -25,6 +25,7 @@ from core.utils import load_gofile_token, save_gofile_token
 from core.engine import process_url, download_single_file
 
 UI_DIR = os.path.join(BASE_DIR, "ui")
+ASSETS_DIR = os.path.join(BASE_DIR, "assets")
 SETTINGS_FILE = os.path.join(BASE_DIR, "settings.json")
 HISTORY_FILE = os.path.join(BASE_DIR, "history.json")
 
@@ -126,7 +127,9 @@ class MercatcherHTTPHandler(BaseHTTPRequestHandler):
                 self.send_error(404, "UI index.html not found")
 
         elif path in ["/mercatcher.png", "/logo.png"]:
-            img_file = os.path.join(UI_DIR, "mercatcher.png")
+            img_file = os.path.join(ASSETS_DIR, "mercatcher.png")
+            if not os.path.exists(img_file):
+                img_file = os.path.join(UI_DIR, "mercatcher.png")
             if not os.path.exists(img_file):
                 img_file = os.path.join(BASE_DIR, "mercatcher.png")
             if os.path.exists(img_file):
@@ -164,8 +167,10 @@ class MercatcherHTTPHandler(BaseHTTPRequestHandler):
         elif path in ["/favicon.ico", "/mercatcher.ico", "/mercatcher44x44.ico", "/mercatcher150x150.ico", "/mercatcher310x310.ico"]:
             fname = path.lstrip("/")
             if fname == "favicon.ico":
-                fname = "mercatcher.ico" if os.path.exists(os.path.join(BASE_DIR, "mercatcher.ico")) else "mercatcher44x44.ico"
-            ico_file = os.path.join(UI_DIR, fname)
+                fname = "mercatcher.ico" if (os.path.exists(os.path.join(ASSETS_DIR, "mercatcher.ico")) or os.path.exists(os.path.join(BASE_DIR, "mercatcher.ico"))) else "mercatcher44x44.ico"
+            ico_file = os.path.join(ASSETS_DIR, fname)
+            if not os.path.exists(ico_file):
+                ico_file = os.path.join(UI_DIR, fname)
             if not os.path.exists(ico_file):
                 ico_file = os.path.join(BASE_DIR, fname)
             if os.path.exists(ico_file):
