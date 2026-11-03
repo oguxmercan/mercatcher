@@ -3,141 +3,153 @@
 <img src="assets/mercatcher.png" alt="Mercatcher Logo" width="130" style="border-radius: 26px; box-shadow: 0 8px 32px rgba(2, 132, 199, 0.45); margin-bottom: 12px;" />
 
 # ⚡ Mercatcher
-### Yeni Nesil Toplu Medya & Dosya İndirici
+### Next-Gen Bulk Media & File Downloader Pro
 
 [![Python Version](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://microsoft.com)
 [![UI](https://img.shields.io/badge/UI-Cyberpunk%20Dark%20Glass-0284c7?style=for-the-badge)](ui/)
 
-**Mercatcher**, popüler dosya ve medya barındırma servislerindeki tekil bağlantıları veya devasa albümleri tek tıkla analiz eden, kuyruğa alan ve yüksek hızda toplu olarak indiren modern bir masaüstü uygulamasıdır.
+**Mercatcher** is a modern, high-speed desktop downloader designed to parse, queue, and bulk-download individual files or complete media albums from popular file and video hosting platforms with a single click.
+
+[Downloads (Releases)](https://github.com/oguxmercan/mercatcher/releases) • [Features](#-key-features) • [Supported Platforms](#-supported-platforms) • [Installation](#-installation--usage) • [License](#️-disclaimer--license)
 
 </div>
 
 ---
 
-## 🌟 Öne Çıkan Özellikler
+## 🌟 Key Features
 
-- 🌐 **Otomatik Servis Tespiti:** 11+ popüler medya ve bulut depolama servisini URL'den otomatik algılar, ilgili motora yönlendirir.
-- ⚡ **Çok İş Parçacıklı (Multi-threaded) İndirme:** Ayarlanabilir eşzamanlı indirme sayısı (1-5 thread) ile internet bant genişliğini maksimum verimle kullanır.
-- 🔄 **Yarıda Kalanı Sürdürme (Resume / .part):** Bağlantı kopsa veya program kapatılsa bile indirilen baytlar korunur, baştan başlamak yerine kaldığı yerden devam eder.
-- 🌍 **Çoklu Dil Desteği (7 Dil):** Türkçe, İngilizce, Basitleştirilmiş Çince, İspanyolca, Felemenkçe, Almanca ve Portekizce. Sistem dilini otomatik algılar, desteklenmeyen dillerde otomatik İngilizce açılır.
-- 🎨 **Modern Cyberpunk Glassmorphic Arayüz:** Koyu neon temalı, çift başlıktan arındırılmış, anlık hız ve disk alanı göstergeli şık masaüstü deneyimi.
-- 🔒 **İstemci Taraflı Şifre Çözücü (MEGA):** MEGA dosyalarını sunucudan çekerken anlık olarak akış halinde (streaming AES-128-CTR) çözer ve diske yazar.
-- 📦 **Bağımsız `.exe` Desteği:** PyInstaller ile tek tıkla taşınabilir (portable), Python gerektirmeyen masaüstü programı haline getirilebilir.
+- 🌐 **Automatic Service Detection:** Automatically identifies 11+ popular media and cloud hosting services from URLs and routes them to their specialized extraction engines.
+- ⚡ **Multi-Threaded Concurrent Downloads:** Adjustable concurrent download limit (1 to 5 threads) to maximize your bandwidth utilization.
+- 🔄 **Smart Resume & Partial File Recovery (`.part`):** Automatically recovers interrupted downloads without starting over from scratch.
+- 🌍 **Multi-Language Support (7 Languages):** Supports English, Turkish, Simplified Chinese, Spanish, Dutch, German, and Portuguese with automatic system language detection and seamless fallback.
+- 🎨 **Sleek Cyberpunk Glassmorphic UI:** Immersive dark theme, frameless modern header, live download speed indicator, and real-time free disk space monitor.
+- 🔒 **Client-Side Streaming Decryption (MEGA):** Decrypts MEGA files on-the-fly (AES-128-CTR streaming) without writing unencrypted temporary chunks.
+- 📦 **Standalone Executable (`.exe`):** Fully portable single-file binary with embedded UI and assets—no Python installation required for end users.
 
 ---
 
-## 🚀 Desteklenen Platformlar
+## 🚀 Supported Platforms
 
-| Platform | Format & Yetenekler | Çözümleme Yöntemi |
+| Platform | Supported Formats & Capabilities | Extraction Method |
 | :--- | :--- | :--- |
-| **GoFile** (`gofile.io`) | Tekil dosyalar, klasörler ve alt klasörler | Dinamik SHA-256 `X-Website-Token` ve oturum token motoru |
-| **Bunkr** (`.si`, `.is`, `.cr`, `.to`, `.black`, `.ws`, `.ac` vb.) | Albümler (`/a/`), videolar (`/v/`), görseller (`/i/`), indirmeler (`/d/`) | Çoklu sayfa ayrıştırıcı ve CDN yönlendirici |
-| **Balbums** (`balbums.st`, `balbums.org`) | Bunkr albüm indeksleri ve doğrudan medya listeleri | Albüm ve doğrudan medya tespit motoru |
-| **Pixeldrain** (`pixeldrain.com`) | Tekil dosyalar (`/u/`) ve albümler/listeler (`/l/`) | Resmi JSON REST API entegrasyonu |
-| **KrakenFiles** (`krakenfiles.com`) | Tekil büyük dosyalar ve arşivler | Dinamik token ve hash el sıkışmasıyla doğrudan CDN çekimi |
-| **CyberFile** (`cyberfile.me`, `cyberfile.is`) | Tekil dosyalar ve paylaşılan klasörler (`/folder/`) | Tokenli ve şifreli indirme bağlantısı ayrıştırma |
-| **Filester** (`filester.me`, `filester.net`) | Sayfalandırmalı genel klasörler (`/f/`) ve dosyalar (`/d/`) | Sayfa tarayıcı (crawler) ve otomatik sayfalama |
-| **MEGA** (`mega.nz`, `mega.io`) | Tekil dosyalar ve klasörler (`/file/`, `/folder/`) | İstemci tarafında AES-128-CTR akış deşifreleme |
-| **MixDrop** (`mixdrop.co`, `mixdrop.sx`, `mixdrop.to` vb.) | Stream videoları ve dosyalar | Dahili Dean Edwards Packer (p,a,c,k,e,d) JS açıcı |
-| **DoodStream** (`dood.to`, `doodstream.com`, `ds2play.com` vb.) | Video akışları ve indirmeleri | `pass_md5` anahtar üretimi ve zaman damgalı tokenlama |
-| **FileMoon** (`filemoon.sx`, `filemoon.to`, `filemoon.in` vb.) | Gömülü video sayfaları | Packed JS çözümlemesi ile doğrudan akış çekimi |
-| **Doğrudan Linkler** | `.mp4`, `.zip`, `.mkv`, `.jpg` vb. her türlü doğrudan URL | Akıllı dosya adı tespiti ile doğrudan indirme |
+| **GoFile** (`gofile.io`) | Single files, folders, and nested folders | Dynamic SHA-256 `X-Website-Token` handshake & session tokens |
+| **Bunkr** (`.si`, `.is`, `.cr`, `.to`, `.black`, `.ws`, `.ac`, etc.) | Albums (`/a/`), videos (`/v/`), images (`/i/`), downloads (`/d/`) | Multi-page pagination crawler & direct CDN resolver |
+| **Balbums** (`balbums.st`, `balbums.org`) | Bunkr album indexes and direct media galleries | Automated album parser & media extractor |
+| **Pixeldrain** (`pixeldrain.com`) | Single files (`/u/`) and albums / lists (`/l/`) | Official JSON REST API integration |
+| **KrakenFiles** (`krakenfiles.com`) | Large files and archives | Session token validation & direct CDN stream extraction |
+| **CyberFile** (`cyberfile.me`, `cyberfile.is`) | Single files and shared folders (`/folder/`) | Tokenized encrypted download link parsing |
+| **Filester** (`filester.me`, `filester.net`) | Paginated public folders (`/f/`) and files (`/d/`) | Multi-page link crawler & automatic pagination |
+| **MEGA** (`mega.nz`, `mega.io`) | Individual files and folders (`/file/`, `/folder/`) | Native client-side AES-128-CTR streaming decryption |
+| **MixDrop** (`mixdrop.co`, `mixdrop.sx`, `mixdrop.to`, etc.) | Streaming video embeds and direct downloads | Built-in Dean Edwards Packer (`p,a,c,k,e,d`) JavaScript unpacker |
+| **DoodStream** (`dood.to`, `doodstream.com`, `ds2play.com`, etc.) | Video streams and downloads | Dynamic `pass_md5` token generation & timestamped authorization |
+| **FileMoon** (`filemoon.sx`, `filemoon.to`, `filemoon.in`, etc.) | Embedded video players | Packed JS evaluation and direct stream URL resolving |
+| **Direct Links** | Any direct file link (`.mp4`, `.zip`, `.mkv`, `.jpg`, etc.) | Direct multi-threaded stream downloader with smart filename resolver |
 
 ---
 
-## 🛠️ Kurulum & Çalıştırma
+## 🛠️ Installation & Usage
 
-### Yöntem 1: Tek Tıkla Masaüstü Uygulaması Olarak Çalıştırma (Önerilen)
-Python kurulu sisteminizde herhangi bir komut girmeden:
-1. `start_mercatcher.bat` dosyasına **çift tıklayın**.
-2. Uygulama bağımsız pencere modunda açılacaktır.
+### Method 1: Pre-built Executable (Recommended for End Users)
+
+1. Download the latest **`Mercatcher.exe`** from the [GitHub Releases](https://github.com/oguxmercan/mercatcher/releases) page.
+2. Double-click **`Mercatcher.exe`** to launch. No Python or installation required!
 
 ---
 
-### Yöntem 2: Kaynak Koddan Çalıştırma
+### Method 2: Running from Source Code
 
-1. **Depoyu klonlayın:**
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/oguxmercan/mercatcher.git
-   cd Mercatcher
+   cd mercatcher
    ```
 
-2. **Gereksinimleri yükleyin:**
+2. **Install requirements:**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Uygulamayı başlatın:**
-   - **Grafik Arayüz (GUI):**
+3. **Launch the application:**
+   - **Modern GUI (Desktop Mode):**
      ```bash
      python mercatcher_gui.py
+     # or simply double-click start_mercatcher.bat
      ```
-   - **Komut Satırı Modu (CLI):**
+   - **CLI Mode (Headless / Terminal):**
      ```bash
      python mercatcher_cli.py https://gofile.io/d/XXXXXX https://bunkr.si/a/YYYYYY
      ```
 
 ---
 
-### Yöntem 3: Tek Parça `.exe` (Taşınabilir Sürüm) Oluşturma
+### Method 3: Building Standalone `.exe` Locally
 
-Python kurulu olmayan bilgisayarlarda da çalıştırmak için:
-1. `build_exe.bat` dosyasını çalıştırın.
-2. PyInstaller otomatik olarak Rust/C kütüphanelerini, WebView bileşenlerini ve arayüzü paketler.
-3. Çıktı: `dist/Mercatcher.exe` konumunda tek parça olarak hazır olur!
+To build your own portable single-file executable using PyInstaller:
+1. Run [`build_exe.bat`](file:///F:/diabloXwindwaker/Mercatcher/build_exe.bat) or execute:
+   ```bash
+   python -m PyInstaller --noconsole --onefile --clean --icon="assets/mercatcher.ico" --add-data "ui;ui" --add-data "assets;assets" --collect-all cryptography --hidden-import=cryptography --hidden-import=cryptography.hazmat.bindings._rust --name "Mercatcher" mercatcher_gui.py
+   ```
+2. Your bundled binary will be available inside `dist/Mercatcher.exe`.
 
 ---
 
-## 📂 Proje Dizin Yapısı
+## 📂 Project Structure
 
 ```
 Mercatcher/
 │
-├── core/                       # Çekirdek İndirme ve Çıkarıcı Modülleri
-│   ├── __init__.py             # Modül dışa aktarımları
-│   ├── config.py               # Servisler, domain listeleri ve sabitler
-│   ├── utils.py                # Güvenli dosya adı, token yönetimi
-│   ├── js_unpacker.py          # Dean Edwards JS açıcı (MixDrop, FileMoon)
-│   ├── engine.py               # Multi-threaded download & resume motoru
-│   ├── gofile.py               # GoFile X-Website-Token & API motoru
-│   ├── bunkr.py                # Bunkr & Balbums çoklu sayfa çıkarıcısı
-│   ├── pixeldrain.py           # Pixeldrain API motoru
-│   ├── krakenfiles.py          # KrakenFiles token çözücü
-│   ├── cyberfile.py            # CyberFile klasör & dosya ayrıştırıcı
-│   ├── filester.py             # Filester sayfalandırma tarayıcısı
-│   ├── mega.py                 # MEGA istemci taraflı AES-CTR şifre çözücü
-│   ├── mixdrop.py              # MixDrop video akış çıkarıcı
-│   ├── doodstream.py           # DoodStream pass_md5 çözücü
-│   └── filemoon.py             # FileMoon video yakalayıcı
+├── assets/                     # Brand icons and visual assets
+│   ├── mercatcher.ico          # Multi-resolution Windows app icon (16x16 to 256x256)
+│   ├── mercatcher.png          # High-resolution 1024x1024 logo
+│   └── mercatcher*.ico         # System tile icons
 │
-├── ui/                         # Arayüz Dosyaları
-│   └── index.html              # Modern Cyberpunk Dark Glass Arayüz (HTML5/CSS3/JS)
+├── core/                       # Core Downloader & Extractor Modules
+│   ├── __init__.py             # Module exports
+│   ├── config.py               # Supported domains, headers, and constants
+│   ├── utils.py                # Filename sanitization, token caching
+│   ├── js_unpacker.py          # Dean Edwards JS unpacker (MixDrop, FileMoon)
+│   ├── engine.py               # Multi-threaded download & resume engine
+│   ├── gofile.py               # GoFile API & dynamic token resolver
+│   ├── bunkr.py                # Bunkr & Balbums multi-page scraper
+│   ├── pixeldrain.py           # Pixeldrain REST API engine
+│   ├── krakenfiles.py          # KrakenFiles token solver
+│   ├── cyberfile.py            # CyberFile folder & file extractor
+│   ├── filester.py             # Filester pagination crawler
+│   ├── mega.py                 # MEGA streaming AES-CTR decrypter
+│   ├── mixdrop.py              # MixDrop video stream extractor
+│   ├── doodstream.py           # DoodStream pass_md5 resolver
+│   └── filemoon.py             # FileMoon video stream parser
 │
-├── server.py                   # Sıfır harici bağımlılıklı yerel HTTP API sunucusu
-├── mercatcher_gui.py           # Native masaüstü başlatıcı (pywebview & Edge app)
-├── mercatcher_cli.py           # Hızlı terminal arayüzü
-├── start_mercatcher.bat        # Windows tek tık başlatıcı
-├── build_exe.bat               # Windows tek tık PyInstaller EXE derleyici
-├── requirements.txt            # Python bağımlılıkları
-├── .gitignore                  # Git hariç tutma kuralları
-└── README.md                   # Dokümantasyon
+├── ui/                         # User Interface
+│   └── index.html              # Cyberpunk Dark Glass UI (HTML5, CSS3, JS, I18n)
+│
+├── server.py                   # Zero-dependency local HTTP API server
+├── mercatcher_gui.py           # Native desktop launcher (pywebview & Edge app)
+├── mercatcher_cli.py           # Command-line interface
+├── start_mercatcher.bat        # Windows one-click launcher
+├── build_exe.bat               # Windows one-click PyInstaller compiler
+├── github_push.bat             # Git push convenience script
+├── requirements.txt            # Python dependencies
+├── .gitignore                  # Git ignore rules
+├── LICENSE                     # MIT License
+└── README.md                   # Documentation
 ```
 
 ---
 
-## ⚙️ Yapılandırma ve İpuçları
+## ⚙️ Settings & Tips
 
-- **İndirme Klasörü:** Arayüz üzerinden tek tıkla istediğiniz klasörü seçebilir veya sağ üstten doğrudan klasörü açabilirsiniz.
-- **Eşzamanlı Bağlantı (Threads):** Ağ hızınıza göre 1 ile 5 arasında anlık dosya indirme limiti belirleyebilirsiniz.
-- **Bağlantılar Arası Bekleme (Delay):** Sunucu taraflı rate limit (istek sınırı) engellerine takılmamak için linkler arası bekleme süresini (1-15 sn) ayarlayabilirsiniz.
-- **GoFile Tokeni:** GoFile misafir kullanıcıları IP bazlı sınırlayabilir. Arayüzün Ayarlar sekmesinden ücretsiz GoFile hesabınızın API tokenini girerek sınırsız indirme yapabilirsiniz.
+- **Custom Download Folder:** Select any destination directory directly from the UI or click the folder button to reveal it in Windows Explorer.
+- **Concurrent Connections:** Tune active simultaneous download threads (1 to 5) depending on your network bandwidth.
+- **Request Delay:** Set an inter-link delay (1 to 15 seconds) to avoid server-side rate limits when scraping massive albums.
+- **GoFile API Token:** GoFile may enforce guest download quotas based on your IP. You can input your free GoFile account API token in the Settings panel for unrestricted downloads.
 
 ---
 
-## ⚖️ Yasal Uyarı & Lisans
+## ⚖️ Disclaimer & License
 
-Bu yazılım yalnızca eğitim ve kişisel arşivleme amacıyla geliştirilmiştir. Kullanıcıların telif hakkı ile korunan veya üçüncü taraf hizmet şartlarını ihlal eden içerikleri indirmesi geliştiricinin sorumluluğunda değildir.
+This software is developed strictly for educational and personal archiving purposes. The developer is not responsible for any misuse, downloading of copyrighted material, or violations of third-party terms of service.
 
-Bu proje **MIT Lisansı** ile lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakabilirsiniz.
+This project is licensed under the **MIT License**. See [LICENSE](LICENSE) for details.
