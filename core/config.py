@@ -28,6 +28,18 @@ BUNKR_DOMAINS = [
     "balbums.st", "balbums.org"
 ]
 
+# DoodStream alan adları ve aynaları (mirrors)
+DOODSTREAM_DOMAINS = [
+    "doodstream.com", "doodstream.co", "doodstream.net", "doodstream.org",
+    "dood.to", "dood.so", "dood.cx", "dood.watch", "dood.pm", "dood.wf",
+    "dood.re", "ds2play.com", "ds2video.com", "doods.pro", "dood.ws",
+    "dood.li", "dood.la", "dood.sh", "dood.yt", "dood.stream", "dood.video",
+    "doods.yt", "dood.fit", "myembed.top", "dood.vg", "dood.cd", "dood.work",
+    "dood.cc", "dood.club", "dood.co", "dood.fun", "dood.live", "dood.online",
+    "dood.party", "dood.tech", "dood.vip", "dood.website", "doods.top",
+    "playmogo.com"
+]
+
 # Desteklenen Servisler
 SUPPORTED_SERVICES = [
     "GoFile", "Bunkr", "Balbums", "Filester", "CyberFile", "Pixeldrain", 
