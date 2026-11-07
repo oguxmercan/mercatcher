@@ -12,4 +12,5 @@ from .mega import MegaExtractor
 from .mixdrop import MixDropExtractor
 from .doodstream import DoodStreamExtractor
 from .filemoon import FileMoonExtractor
+from .ifsaturk import IfsaTurkExtractor
 from .engine import download_single_file, process_url

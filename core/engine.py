@@ -25,6 +25,7 @@ from .filester import FilesterExtractor
 from .mixdrop import MixDropExtractor
 from .doodstream import DoodStreamExtractor
 from .filemoon import FileMoonExtractor
+from .ifsaturk import IfsaTurkExtractor
 from .mega import MegaExtractor
 
 def download_single_file(item: dict, base_dir: str, chunk_size: int = 1024 * 64, log_func=None, progress_func=None) -> bool:
@@ -130,7 +131,7 @@ def download_single_file(item: dict, base_dir: str, chunk_size: int = 1024 * 64,
 
                         f.write(chunk)
                         current_bytes += len(chunk)
-                        if progress_bar:
+                        if progress_bar is not None:
                             progress_bar.update(len(chunk))
 
                         now = time.time()
@@ -143,7 +144,7 @@ def download_single_file(item: dict, base_dir: str, chunk_size: int = 1024 * 64,
                                 percent = int((current_bytes / total_size) * 100) if total_size > 0 else 0
                                 progress_func(name, current_bytes, total_size, current_speed, percent)
 
-            if progress_bar:
+            if progress_bar is not None:
                 progress_bar.close()
 
         if os.path.exists(target_path):
@@ -244,7 +245,13 @@ def process_url(url: str, session: requests.Session, log_func=None, custom_token
         logger("[*] FileMoon bağlantısı algılandı.")
         return filemoon.extract(url)
 
-    # 11. GENEL DİREKT LİNK
+    # 11. IFSATURK
+    ifsaturk = IfsaTurkExtractor(session, log_func=logger)
+    if ifsaturk.is_ifsaturk_url(url):
+        logger("[*] İfsaTürk bağlantısı algılandı.")
+        return ifsaturk.extract(url)
+
+    # 12. GENEL DİREKT LİNK
     parsed = urllib.parse.urlparse(url)
     filename = os.path.basename(parsed.path) or f"download_{int(time.time())}"
     filename = sanitize_filename(filename)

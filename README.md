@@ -45,6 +45,7 @@
 | **MixDrop** (`mixdrop.co`, `mixdrop.sx`, `mixdrop.to`, etc.) | Streaming video embeds and direct downloads | Built-in Dean Edwards Packer (`p,a,c,k,e,d`) JavaScript unpacker |
 | **DoodStream** (`dood.to`, `doodstream.com`, `ds2play.com`, etc.) | Video streams and downloads | Dynamic `pass_md5` token generation & timestamped authorization |
 | **FileMoon** (`filemoon.sx`, `filemoon.to`, `filemoon.in`, etc.) | Embedded video players | Packed JS evaluation and direct stream URL resolving |
+| **İfsaTürk** (`ifsaturkk.com`, `ifsaturk.com`) | Complete photo albums (`/fotograflar/`) and videos (`/video/`) | Multi-page gallery scraper & BunnyCDN high-res stream resolver |
 | **Direct Links** | Any direct file link (`.mp4`, `.zip`, `.mkv`, `.jpg`, etc.) | Direct multi-threaded stream downloader with smart filename resolver |
 
 ---
@@ -120,7 +121,8 @@ Mercatcher/
 │   ├── mega.py                 # MEGA streaming AES-CTR decrypter
 │   ├── mixdrop.py              # MixDrop video stream extractor
 │   ├── doodstream.py           # DoodStream pass_md5 resolver
-│   └── filemoon.py             # FileMoon video stream parser
+│   ├── filemoon.py             # FileMoon video stream parser
+│   └── ifsaturk.py             # İfsaTürk gallery & video crawler
 │
 ├── ui/                         # User Interface
 │   └── index.html              # Cyberpunk Dark Glass UI (HTML5, CSS3, JS, I18n)

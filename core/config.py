@@ -40,10 +40,15 @@ DOODSTREAM_DOMAINS = [
     "playmogo.com"
 ]
 
+# İfsaTürk alan adları
+IFSATURK_DOMAINS = [
+    "ifsaturkk.com", "ifsaturk.com", "ifsaturkk.net", "ifsaturk.net", "ifsaturk.org"
+]
+
 # Desteklenen Servisler
 SUPPORTED_SERVICES = [
     "GoFile", "Bunkr", "Balbums", "Filester", "CyberFile", "Pixeldrain", 
-    "KrakenFiles", "MEGA", "MixDrop", "DoodStream", "FileMoon"
+    "KrakenFiles", "MEGA", "MixDrop", "DoodStream", "FileMoon", "İfsaTürk"
 ]
 
 # Token kayıt dosyası (kullanıcı dizini veya uygulama dizini)
